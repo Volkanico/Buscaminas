@@ -5,7 +5,7 @@ import java.util.ArrayList;
 public class Tablero {
     private int numFilas;
     private int numColumnas;
-    private Casilla[][] tableroDeCasillas = new Casilla[this.numFilas][this.numColumnas];
+    private Casilla[][] tableroDeCasillas;
     private int numMinas;
 
     public Tablero(int numFilas, int numColumnas, int numMinas) {
@@ -91,8 +91,6 @@ public class Tablero {
                     posicioTemporalColumna--;
                 } //Izquierda Arriba
             }
-
-
             if (posicioTemporalFila >= 0 && posicioTemporalFila < this.tableroDeCasillas.length
                     && posicioTemporalColumna >= 0 && posicioTemporalColumna < this.tableroDeCasillas[0].length) {
 

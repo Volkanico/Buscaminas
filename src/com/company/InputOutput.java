@@ -5,7 +5,7 @@ public class InputOutput {
 
     //INSTANCIES
     Tablero tablero;
-    Jugador jugador = new Jugador();
+    Jugador jugador;
 
     Scanner sc = new Scanner(System.in);
 
@@ -16,9 +16,18 @@ public class InputOutput {
     //EVENT GUANYAR-PERDUT
     boolean LoseWin;
 
+
+    public void introduccio () {
+        System.out.println("¡Bienvenido a Buscaminas! :)");
+        System.out.println("Introduce tu nombre: ");
+        jugador = new Jugador(sc.nextLine());
+        System.out.println("Tu nombre de jugador sera " + jugador.getNombreJugador());
+        System.out.println("¡Empieza el juego!");
+    }
+
     public void EleccioDificultat () {
 
-        System.out.println("Indica la dificultat a la que es vol jugar " + jugador.getNombreJugador() + ":" +
+        System.out.println("Indica la dificultad que quieres jugar " + jugador.getNombreJugador() + ":" +
                 "\n 1 Facil" +
                 "\n 2 Medio" +
                 "\n 3 Dificil" +
@@ -31,24 +40,24 @@ public class InputOutput {
 
         switch (dificultat) {
             case 1 -> {
-                System.out.println("Dificultat Facil");
+                System.out.println("Dificultad Facil");
                 tablero = new Tablero(8, 8, 10);
             }
             case 2 -> {
-                System.out.println("Dificultat Medio");
+                System.out.println("Dificultad Medio");
                 tablero = new Tablero(16, 16, 40);
             }
             case 3 -> {
-                System.out.println("Dificultat Dificil");
+                System.out.println("Dificultad Dificil");
                 tablero = new Tablero(16, 30, 99);
             }
             case 4 -> {
-                System.out.println("Dificultat Personalizada");
-                System.out.println("Introdueix el numero de files");
+                System.out.println("Dificultad Personalizada");
+                System.out.println("Introduce el numero de filas");
                 int filesCustom = sc.nextInt();
-                System.out.println("Introdueix el numero de columnes");
+                System.out.println("Introduce el numero de columnas");
                 int columnesCustom = sc.nextInt();
-                System.out.println("Introdueix el numero de mines");
+                System.out.println("Introduce el numero de minas");
                 int minesCustom = sc.nextInt();
                 tablero = new Tablero(filesCustom, columnesCustom, minesCustom);
             }
@@ -90,7 +99,7 @@ public class InputOutput {
 
     }
     public void joc () {
-        jugador.Introduccio();
+        introduccio();
         EleccioDificultat();
         switchElectionDifficult();
         JugarPartida();
