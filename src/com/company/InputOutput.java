@@ -13,9 +13,6 @@ public class InputOutput {
     int coordenadaY;
     int dificultat;
 
-    //EVENT GUANYAR-PERDUT
-    boolean hasPerdido;
-
     public void introduccio () {
         System.out.println("¡Bienvenido a Buscaminas! :)");
         System.out.println("Introduce tu nombre: ");
@@ -33,75 +30,73 @@ public class InputOutput {
                 "\n 4 Personalitzat");
     }
 
-
     public void switchElectionDifficult () {
 
-        dificultat = sc.nextInt();
-
-        switch (dificultat) {
-            case 1 -> {
-                System.out.println("Dificultad Facil");
-                tablero = new Tablero(8, 8, 10);
-            }
-            case 2 -> {
-                System.out.println("Dificultad Medio");
-                tablero = new Tablero(16, 16, 40);
-            }
-            case 3 -> {
-                System.out.println("Dificultad Dificil");
-                tablero = new Tablero(16, 30, 99);
-            }
-            case 4 -> {
-                System.out.println("Dificultad Personalizada");
-                System.out.println("Introduce el numero de filas");
-                int filesCustom = sc.nextInt();
-                System.out.println("Introduce el numero de columnas");
-                int columnesCustom = sc.nextInt();
-                System.out.println("Introduce el numero de minas");
-                int minesCustom = sc.nextInt();
-                tablero = new Tablero(filesCustom, columnesCustom, minesCustom);
-            }
+        int entrada = sc.nextInt();
+        if ( entrada <= 4 && entrada > 0) {
+            dificultat = entrada;
+        }else{
+            System.out.println("Este numero no existe");
+            System.out.println("El ordenador va a explotar");
+            System.exit(0);
         }
+
+            switch (dificultat) {
+                case 1 -> {
+                    System.out.println("Dificultad Facil");
+                    tablero = new Tablero(8, 8, 10);
+                }
+                case 2 -> {
+                    System.out.println("Dificultad Medio");
+                    tablero = new Tablero(16, 16, 40);
+                }
+                case 3 -> {
+                    System.out.println("Dificultad Dificil");
+                    tablero = new Tablero(16, 30, 99);
+                }
+                case 4 -> {
+                    System.out.println("Dificultad Personalizada");
+                    System.out.println("Introduce el numero de filas");
+                    int filesCustom = sc.nextInt();
+                    System.out.println("Introduce el numero de columnas");
+                    int columnesCustom = sc.nextInt();
+                    System.out.println("Introduce el numero de minas");
+                    int minesCustom = sc.nextInt();
+                    tablero = new Tablero(filesCustom, columnesCustom, minesCustom);
+                }
+            }
+
         tablero.imprimirTablero();
         System.out.println();
         System.out.println();
-        tablero.imprimirTableroPISTASYBOMBAS();
+        //tablero.imprimirTableroPISTASYBOMBAS(coordenadaX,coordenadaY);
         System.out.println("------------------------------------------------");
     }
     public void JugarPartida () {
-
         int option;
-
 
             System.out.println("Introduce coordenadas X: ");
             coordenadaX = sc.nextInt() - 1;
+            if (coordenadaX >= 0 && coordenadaX < tablero.getNumFilas()){
             System.out.println("Introduce coordenadas y: ");
             coordenadaY = sc.nextInt() - 1;
+            if (coordenadaY >= 0 && coordenadaY < tablero.getNumColumnas()){
             System.out.println("¿Quieres destapar o poner una bandera? Destapar.1 Bandera.2");
             option = sc.nextInt();
-            if( option == 2){
-                tablero.getTableroDeCasillas()[coordenadaX][coordenadaY].setBandera(true);
-                tablero.imprimirTablero();
-            }
-
-            if ( option == 1) {
-
-                tablero.destaparcasilla(coordenadaX,coordenadaY);
-                //tablero.destaparcasilla(coordenadaX,coordenadaY);
-                tablero.imprimirTablero();
-
-
-
-            }
+                if( option == 2){
+                    tablero.getTableroDeCasillas()[coordenadaX][coordenadaY].setBandera(true);
+                    tablero.imprimirTablero();
+                }
+                if ( option == 1) {
+                    tablero.destaparCasilla(coordenadaX,coordenadaY);
+                    tablero.imprimirTablero();
+                }
+            } else {System.out.println("ERROR: Introduce nueva coordenada Y");}
+            } else {System.out.println("ERROR: Introduce nueva coordenada X");}
             tablero.siesvictoria();
             JugarPartida();
 
     }
-
-
-
-
-
     public void joc () {
         introduccio();
         EleccioDificultat();

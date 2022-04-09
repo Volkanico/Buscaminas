@@ -20,7 +20,7 @@ public class Tablero {
         generarMinas();
         for (int i = 0; i < tableroDeCasillas.length; i++){
             for (int y = 0; y < tableroDeCasillas[i].length; y++){
-                obtPistes(i,y);
+                obtenirPistesDeMinesAlVoltant(i,y);
             }
         }
     }
@@ -46,54 +46,39 @@ public class Tablero {
         }
     }
 
-    public void siesPerdida (int fila, int columna) {
-        if(tableroDeCasillas[fila][columna].isMina()) {
-            destaparTotElTablero();
-        }
-    }
-
-
-    public void destaparcasilla(int fila, int columna){
+    public void destaparCasilla(int fila, int columna){
         if (!tableroDeCasillas[fila][columna].isBandera()){
         if(!tableroDeCasillas[fila][columna].isTapado()){
             tableroDeCasillas[fila][columna].setTapado(true);
             if(tableroDeCasillas[fila][columna].isMina()){
-                imprimirTableroPISTASYBOMBAS();
+                imprimirTableroPISTASYBOMBAS(fila,columna);
                 System.out.println("¡HAS PERDIDO MANCO! ");
                 System.exit(0);
 
             }else{
-                destaparCasillasVicines(fila, columna);
+                destaparCasillasVeines(fila, columna);
             }
         }
         }
     }
-    private void destaparCasillasVicines(int fila, int columna) {
-        ArrayList<Casilla> casillasVicines = obtenerCasillasVicines(fila, columna);
-        for(Casilla casillaVicina : casillasVicines){
-            if(casillaVicina.getNumeroMinasAlrededor() == 0){
-                destaparcasilla(casillaVicina.getPosicioFila(), casillaVicina.getPosicioColumna());
+    private void destaparCasillasVeines(int fila, int columna) {
+        ArrayList<Casilla> casillasVeines = obtenerCasillasVeines(fila, columna);
+        for(Casilla casillaVeina : casillasVeines){
+            if(casillaVeina.getNumeroMinasAlrededor() == 0){
+                destaparCasilla(casillaVeina.getPosicioFila(), casillaVeina.getPosicioColumna());
             }else{
-                casillaVicina.setTapado(true);
+                casillaVeina.setTapado(true);
             }
         }
     }
-    private void destaparTotElTablero() {
-        for(int fila = 0; fila < numFilas; fila++){
-            for(int columna = 0; columna < numColumnas; columna++){
-                if(tableroDeCasillas[fila][columna].isMina()){
-                    tableroDeCasillas[fila][columna].setTapado(true);
-                }
-            }
-        }
-    }
-    private ArrayList<Casilla> obtenerCasillasVicines(int fila, int columna) {
+
+    private ArrayList<Casilla> obtenerCasillasVeines(int fila, int columna) {
         ArrayList<Casilla> casillasVicines = new ArrayList<>();
-        for(int filaVicina = fila - 1; filaVicina <= fila + 1; filaVicina++){
-            for(int columnaVicina = columna - 1; columnaVicina <= columna + 1; columnaVicina++){
-                if(filaVicina >= 0 && filaVicina < numFilas && columnaVicina >= 0 && columnaVicina < numColumnas){
-                    if(!(filaVicina == fila && columnaVicina == columna)){
-                        casillasVicines.add(tableroDeCasillas[filaVicina][columnaVicina]);
+        for(int filaVeina = fila - 1; filaVeina <= fila + 1; filaVeina++){
+            for(int columnaVeina = columna - 1; columnaVeina <= columna + 1; columnaVeina++){
+                if(filaVeina >= 0 && filaVeina < numFilas && columnaVeina >= 0 && columnaVeina < numColumnas){
+                    if(!(filaVeina == fila && columnaVeina == columna)){
+                        casillasVicines.add(tableroDeCasillas[filaVeina][columnaVeina]);
                     }
                 }
             }
@@ -101,8 +86,7 @@ public class Tablero {
         return casillasVicines;
     }
 
-
-    public void obtPistes (int fila, int columna) {
+    public void obtenirPistesDeMinesAlVoltant (int fila, int columna) {
         int counter = 0;
         ArrayList<Casilla> casillasVeines = new ArrayList<>();
         for(int filaVicina = fila - 1; filaVicina <= fila + 1; filaVicina++){
@@ -153,7 +137,8 @@ public class Tablero {
         }
     }
 
-    public void imprimirTableroPISTASYBOMBAS() {
+    public void imprimirTableroPISTASYBOMBAS(int fila, int columna) {
+        tableroDeCasillas[fila][columna].setTapado(false);
         for (Casilla[] tableroDeCasilla : tableroDeCasillas) {
             for (Casilla casilla : tableroDeCasilla) {
                 if (casilla.isMina()) {
@@ -166,8 +151,15 @@ public class Tablero {
         }
     }
 
-
     public Casilla[][] getTableroDeCasillas() {
         return tableroDeCasillas;
+    }
+
+    public int getNumFilas() {
+        return numFilas;
+    }
+
+    public int getNumColumnas() {
+        return numColumnas;
     }
 }
