@@ -7,10 +7,5 @@ public class Main {
         InputOutput inputOutput = new InputOutput();
         //CRIDADES A METODES DE CLASSE
         inputOutput.joc();
-
-
-
-
-
     }
 }

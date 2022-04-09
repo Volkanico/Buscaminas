@@ -3,10 +3,10 @@ package com.company;
 import java.util.ArrayList;
 
 public class Tablero {
-    private int numFilas;
-    private int numColumnas;
+    private final int numFilas;
+    private final int numColumnas;
     private Casilla[][] tableroDeCasillas;
-    private int numMinas;
+    private final int numMinas;
 
     public Tablero(int numFilas, int numColumnas, int numMinas) {
         this.numFilas = numFilas;
@@ -18,6 +18,11 @@ public class Tablero {
     public void inicialitzarElJoc () {
         inicioCasillas();
         generarMinas();
+        for (int i = 0; i < tableroDeCasillas.length; i++){
+            for (int y = 0; y < tableroDeCasillas[i].length; y++){
+                obtPistes(i,y);
+            }
+        }
     }
 
     public void inicioCasillas() {
@@ -28,7 +33,6 @@ public class Tablero {
             }
         }
     }
-
 
     public void generarMinas() {
         int minasGeneradas = 0;
@@ -42,6 +46,99 @@ public class Tablero {
         }
     }
 
+    public void siesPerdida (int fila, int columna) {
+        if(tableroDeCasillas[fila][columna].isMina()) {
+            destaparTotElTablero();
+        }
+    }
+
+
+    public void destaparcasilla(int fila, int columna){
+        if (!tableroDeCasillas[fila][columna].isBandera()){
+        if(!tableroDeCasillas[fila][columna].isTapado()){
+            tableroDeCasillas[fila][columna].setTapado(true);
+            if(tableroDeCasillas[fila][columna].isMina()){
+                imprimirTableroPISTASYBOMBAS();
+                System.out.println("¡HAS PERDIDO MANCO! ");
+                System.exit(0);
+
+            }else{
+                destaparCasillasVicines(fila, columna);
+            }
+        }
+        }
+    }
+    private void destaparCasillasVicines(int fila, int columna) {
+        ArrayList<Casilla> casillasVicines = obtenerCasillasVicines(fila, columna);
+        for(Casilla casillaVicina : casillasVicines){
+            if(casillaVicina.getNumeroMinasAlrededor() == 0){
+                destaparcasilla(casillaVicina.getPosicioFila(), casillaVicina.getPosicioColumna());
+            }else{
+                casillaVicina.setTapado(true);
+            }
+        }
+    }
+    private void destaparTotElTablero() {
+        for(int fila = 0; fila < numFilas; fila++){
+            for(int columna = 0; columna < numColumnas; columna++){
+                if(tableroDeCasillas[fila][columna].isMina()){
+                    tableroDeCasillas[fila][columna].setTapado(true);
+                }
+            }
+        }
+    }
+    private ArrayList<Casilla> obtenerCasillasVicines(int fila, int columna) {
+        ArrayList<Casilla> casillasVicines = new ArrayList<>();
+        for(int filaVicina = fila - 1; filaVicina <= fila + 1; filaVicina++){
+            for(int columnaVicina = columna - 1; columnaVicina <= columna + 1; columnaVicina++){
+                if(filaVicina >= 0 && filaVicina < numFilas && columnaVicina >= 0 && columnaVicina < numColumnas){
+                    if(!(filaVicina == fila && columnaVicina == columna)){
+                        casillasVicines.add(tableroDeCasillas[filaVicina][columnaVicina]);
+                    }
+                }
+            }
+        }
+        return casillasVicines;
+    }
+
+
+    public void obtPistes (int fila, int columna) {
+        int counter = 0;
+        ArrayList<Casilla> casillasVeines = new ArrayList<>();
+        for(int filaVicina = fila - 1; filaVicina <= fila + 1; filaVicina++){
+            for(int columnaVicina = columna - 1; columnaVicina <= columna + 1; columnaVicina++){
+                if(filaVicina >= 0 && filaVicina < numFilas && columnaVicina >= 0 && columnaVicina < numColumnas){
+                    if(!(filaVicina == fila && columnaVicina == columna)){
+                        casillasVeines.add(tableroDeCasillas[filaVicina][columnaVicina]);
+                    }
+                }
+            }
+        }
+        for (int i = 0; i < casillasVeines.size(); i++){
+            if (casillasVeines.get(i).isMina()){
+                counter++;
+                this.tableroDeCasillas[fila][columna].setNumeroMinasAlrededor(counter);
+            }
+        }
+    }
+
+    public void siesvictoria() {
+        int contadorCasillas = 0;
+
+        for (int i = 0; i < tableroDeCasillas.length; i++) {
+            for (int j = 0; j < tableroDeCasillas[i].length; j++) {
+                if ((!tableroDeCasillas[i][j].isMina() && tableroDeCasillas[i][j].isTapado()) ||
+                        tableroDeCasillas[i][j].isBandera() ) {
+                    contadorCasillas++;
+                }
+            }
+        }
+        if (contadorCasillas == numColumnas * numFilas) {
+            System.out.println("¡HAS GANADO, ENHORABUENA! :) \n" +
+                    "Creado por Volkan Moll ;)");
+            System.exit(0);
+        }
+    }
 
     public void imprimirTablero() {
         for (Casilla[] tableroDeCasilla : tableroDeCasillas) {
@@ -51,91 +148,26 @@ public class Tablero {
                 } else {
                     System.out.print(casilla.isTapado() ? "[" + casilla.getNumeroMinasAlrededor() + "]" : "[X]");
                 }
-                //casillas[i][j].isMina() ?  " *" : " X";
+            }
+            System.out.println();
+        }
+    }
+
+    public void imprimirTableroPISTASYBOMBAS() {
+        for (Casilla[] tableroDeCasilla : tableroDeCasillas) {
+            for (Casilla casilla : tableroDeCasilla) {
+                if (casilla.isMina()) {
+                    System.out.print(casilla.isTapado() ? "[" + casilla.getNumeroMinasAlrededor() + "]" : "[*]");
+                } else {
+                    System.out.print("[" + casilla.getNumeroMinasAlrededor() + "]");
+                }
             }
             System.out.println();
         }
     }
 
 
-    public ArrayList<Casilla> ObtCasillasAlrededor(int coordenadaX, int coordenadaY) {
-        ArrayList<Casilla> casillasAlrededorComprMina = new ArrayList<>();
-        int counter = 0;
-        for (int i = 0; i < tableroDeCasillas.length; i++) {
-            int posicioTemporalFila = coordenadaX;
-            int posicioTemporalColumna = coordenadaY;
-
-            switch (i) {
-                case 0 -> posicioTemporalFila--;
-                //Arriba
-                case 1 -> {
-                    posicioTemporalFila--;
-                    posicioTemporalColumna++;
-                } //Arriba Derecha
-                case 2 -> posicioTemporalColumna++;
-                //Derecha
-                case 3 -> {
-                    posicioTemporalColumna++;
-                    posicioTemporalFila++;
-                } //Abajo Derecha
-                case 4 -> posicioTemporalFila++;
-                //Abajo
-                case 5 -> {
-                    posicioTemporalFila++;
-                    posicioTemporalColumna--;
-                } //Abajo Izquierda
-                case 6 -> posicioTemporalColumna--;
-                //Izquierda
-                case 7 -> {
-                    posicioTemporalFila--;
-                    posicioTemporalColumna--;
-                } //Izquierda Arriba
-            }
-            if (posicioTemporalFila >= 0 && posicioTemporalFila < this.tableroDeCasillas.length
-                    && posicioTemporalColumna >= 0 && posicioTemporalColumna < this.tableroDeCasillas[0].length) {
-
-                casillasAlrededorComprMina.add(this.tableroDeCasillas[posicioTemporalFila][posicioTemporalColumna]);
-
-                if(this.tableroDeCasillas[posicioTemporalFila][posicioTemporalColumna].isMina()) {
-                    counter++;
-                    tableroDeCasillas[coordenadaX][coordenadaY].setNumeroMinasAlrededor(counter);
-                }
-            }
-            //destaparCasillasExpansion(coordenadaX,coordenadaY);
-        }
-        return casillasAlrededorComprMina;
-
-    }
-
-    public int getNumColumnas() {
-        return numColumnas;
-    }
-
-    public void setNumColumnas(int numColumnas) {
-        this.numColumnas = numColumnas;
-    }
-
-    public int getNumFilas() {
-        return numFilas;
-    }
-
-    public void setNumFilas(int numFilas) {
-        this.numFilas = numFilas;
-    }
-
     public Casilla[][] getTableroDeCasillas() {
         return tableroDeCasillas;
-    }
-
-    public void setTableroDeCasillas(Casilla[][] tableroDeCasillas) {
-        this.tableroDeCasillas = tableroDeCasillas;
-    }
-
-    public int getNumMinas() {
-        return numMinas;
-    }
-
-    public void setNumMinas(int numMinas) {
-        this.numMinas = numMinas;
     }
 }

@@ -14,8 +14,7 @@ public class InputOutput {
     int dificultat;
 
     //EVENT GUANYAR-PERDUT
-    boolean LoseWin;
-
+    boolean hasPerdido;
 
     public void introduccio () {
         System.out.println("¡Bienvenido a Buscaminas! :)");
@@ -33,6 +32,7 @@ public class InputOutput {
                 "\n 3 Dificil" +
                 "\n 4 Personalitzat");
     }
+
 
     public void switchElectionDifficult () {
 
@@ -63,13 +63,16 @@ public class InputOutput {
             }
         }
         tablero.imprimirTablero();
-        System.out.println("--------------------------");
+        System.out.println();
+        System.out.println();
+        tablero.imprimirTableroPISTASYBOMBAS();
+        System.out.println("------------------------------------------------");
     }
     public void JugarPartida () {
 
         int option;
 
-        while(!LoseWin) {
+
             System.out.println("Introduce coordenadas X: ");
             coordenadaX = sc.nextInt() - 1;
             System.out.println("Introduce coordenadas y: ");
@@ -80,24 +83,25 @@ public class InputOutput {
                 tablero.getTableroDeCasillas()[coordenadaX][coordenadaY].setBandera(true);
                 tablero.imprimirTablero();
             }
-            tablero.ObtCasillasAlrededor(coordenadaX,coordenadaY);
+
             if ( option == 1) {
-                tablero.getTableroDeCasillas()[coordenadaX][coordenadaY].setTapado(true);
+
+                tablero.destaparcasilla(coordenadaX,coordenadaY);
+                //tablero.destaparcasilla(coordenadaX,coordenadaY);
                 tablero.imprimirTablero();
 
-                if(tablero.getTableroDeCasillas()[coordenadaX][coordenadaY].isMina()){
-                    LoseWin = true;
-                    System.out.println("¡HAS PERDIDO!");
-                }
-                else{
-                    tablero.ObtCasillasAlrededor(coordenadaX,coordenadaY);
-                }
-            }
-            JugarPartida();
-        }
 
+
+            }
+            tablero.siesvictoria();
+            JugarPartida();
 
     }
+
+
+
+
+
     public void joc () {
         introduccio();
         EleccioDificultat();

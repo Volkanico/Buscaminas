@@ -4,9 +4,9 @@ public class Casilla {
     private int posicioFila;
     private int posicioColumna;
 
-    private boolean mina;
-    private boolean bandera;
-    private boolean tapado;
+    private boolean mina = false;
+    private boolean bandera = false;
+    private boolean tapado = false;
 
     private int numeroMinasAlrededor = 0;
 
@@ -16,19 +16,20 @@ public class Casilla {
         this.posicioColumna = posicioColumna;
     }
 
+    public int getPosicioFila() {
+        return posicioFila;
+    }
+
+    public void setPosicioFila(int posicioFila) {
+        this.posicioFila = posicioFila;
+    }
 
     public int getPosicioColumna() {
         return posicioColumna;
     }
+
     public void setPosicioColumna(int posicioColumna) {
         this.posicioColumna = posicioColumna;
-    }
-
-    public int getPosicioFila() {
-        return posicioFila;
-    }
-    public void setPosicioFila(int posicioFila) {
-        this.posicioFila = posicioFila;
     }
 
     public boolean isMina() {
@@ -60,14 +61,4 @@ public class Casilla {
         this.numeroMinasAlrededor = numeroMinasAlrededor;
     }
 }
-/*
 
-jugador: nom, torn,
-InputOutput: entrada i sortide de dades
-Tauler: format per caselles amb una matriu bidimensional
-per fer els tres nivells, podriem fer 3 constructors diferents
-
-
-
-caselles veïnes:
-*/
