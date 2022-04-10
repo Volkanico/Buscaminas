@@ -1,8 +1,8 @@
 package com.company;
 
 public class Casilla {
-    private int posicioFila;
-    private int posicioColumna;
+    private final int posicioFila;
+    private final int posicioColumna;
 
     private boolean mina = false;
     private boolean bandera = false;
@@ -16,21 +16,9 @@ public class Casilla {
         this.posicioColumna = posicioColumna;
     }
 
-    public int getPosicioFila() {
-        return posicioFila;
-    }
+    public int getPosicioFila() {return posicioFila;}
 
-    public void setPosicioFila(int posicioFila) {
-        this.posicioFila = posicioFila;
-    }
-
-    public int getPosicioColumna() {
-        return posicioColumna;
-    }
-
-    public void setPosicioColumna(int posicioColumna) {
-        this.posicioColumna = posicioColumna;
-    }
+    public int getPosicioColumna() {return posicioColumna;}
 
     public boolean isMina() {
         return mina;
@@ -56,7 +44,6 @@ public class Casilla {
     public int getNumeroMinasAlrededor() {
         return numeroMinasAlrededor;
     }
-
     public void setNumeroMinasAlrededor(int numeroMinasAlrededor) {
         this.numeroMinasAlrededor = numeroMinasAlrededor;
     }

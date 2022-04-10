@@ -2,13 +2,11 @@ package com.company;
 import java.util.Scanner;
 
 public class InputOutput {
-
     //INSTANCIES
     Tablero tablero;
     Jugador jugador;
 
     Scanner sc = new Scanner(System.in);
-
     int coordenadaX;
     int coordenadaY;
     int dificultat;
@@ -40,7 +38,6 @@ public class InputOutput {
             System.out.println("El ordenador va a explotar");
             System.exit(0);
         }
-
             switch (dificultat) {
                 case 1 -> {
                     System.out.println("Dificultad Facil");
@@ -65,7 +62,6 @@ public class InputOutput {
                     tablero = new Tablero(filesCustom, columnesCustom, minesCustom);
                 }
             }
-
         tablero.imprimirTablero();
         System.out.println();
         System.out.println();
@@ -80,22 +76,21 @@ public class InputOutput {
             if (coordenadaX >= 0 && coordenadaX < tablero.getNumFilas()){
             System.out.println("Introduce coordenadas y: ");
             coordenadaY = sc.nextInt() - 1;
-            if (coordenadaY >= 0 && coordenadaY < tablero.getNumColumnas()){
-            System.out.println("¿Quieres destapar o poner una bandera? Destapar.1 Bandera.2");
-            option = sc.nextInt();
-                if( option == 2){
-                    tablero.getTableroDeCasillas()[coordenadaX][coordenadaY].setBandera(true);
-                    tablero.imprimirTablero();
-                }
-                if ( option == 1) {
-                    tablero.destaparCasilla(coordenadaX,coordenadaY);
-                    tablero.imprimirTablero();
-                }
-            } else {System.out.println("ERROR: Introduce nueva coordenada Y");}
+                if (coordenadaY >= 0 && coordenadaY < tablero.getNumColumnas()){
+                System.out.println("¿Quieres destapar o poner una bandera? Destapar.1 Bandera.2");
+                option = sc.nextInt();
+                    if( option == 2){
+                        tablero.getTableroDeCasillas()[coordenadaX][coordenadaY].setBandera(true);
+                        tablero.imprimirTablero();
+                    }
+                    if ( option == 1) {
+                        tablero.destaparCasilla(coordenadaX,coordenadaY);
+                        tablero.imprimirTablero();
+                    }
+                } else {System.out.println("ERROR: Introduce nueva coordenada Y");}
             } else {System.out.println("ERROR: Introduce nueva coordenada X");}
             tablero.siesvictoria();
             JugarPartida();
-
     }
     public void joc () {
         introduccio();

@@ -48,26 +48,27 @@ public class Tablero {
 
     public void destaparCasilla(int fila, int columna){
         if (!tableroDeCasillas[fila][columna].isBandera()){
-        if(!tableroDeCasillas[fila][columna].isTapado()){
-            tableroDeCasillas[fila][columna].setTapado(true);
-            if(tableroDeCasillas[fila][columna].isMina()){
-                imprimirTableroPISTASYBOMBAS(fila,columna);
-                System.out.println("¡HAS PERDIDO MANCO! ");
-                System.exit(0);
-
-            }else{
-                destaparCasillasVeines(fila, columna);
+            if(!tableroDeCasillas[fila][columna].isTapado()){
+                tableroDeCasillas[fila][columna].setTapado(true);
+                if(tableroDeCasillas[fila][columna].isMina()){
+                    imprimirTableroPISTASYBOMBAS(fila,columna);
+                    System.out.println("¡HAS PERDIDO MANCO! ");
+                    System.exit(0);
+                }else{
+                    destaparCasillasVeines(fila, columna);
+                }
             }
-        }
         }
     }
     private void destaparCasillasVeines(int fila, int columna) {
         ArrayList<Casilla> casillasVeines = obtenerCasillasVeines(fila, columna);
         for(Casilla casillaVeina : casillasVeines){
-            if(casillaVeina.getNumeroMinasAlrededor() == 0){
-                destaparCasilla(casillaVeina.getPosicioFila(), casillaVeina.getPosicioColumna());
-            }else{
-                casillaVeina.setTapado(true);
+            if (!casillaVeina.isMina()) {
+                if(casillaVeina.getNumeroMinasAlrededor() == 0){
+                    destaparCasilla(casillaVeina.getPosicioFila(), casillaVeina.getPosicioColumna());
+                }else{
+                    casillaVeina.setTapado(true);
+                }
             }
         }
     }
@@ -128,9 +129,9 @@ public class Tablero {
         for (Casilla[] tableroDeCasilla : tableroDeCasillas) {
             for (Casilla casilla : tableroDeCasilla) {
                 if (casilla.isBandera()) {
-                    System.out.print(casilla.isTapado() ? "[" + casilla.getNumeroMinasAlrededor() + "]" : "[P]");
+                    System.out.print(casilla.isTapado() ? "[ " + casilla.getNumeroMinasAlrededor() + " ]" : "[ P ]");
                 } else {
-                    System.out.print(casilla.isTapado() ? "[" + casilla.getNumeroMinasAlrededor() + "]" : "[X]");
+                    System.out.print(casilla.isTapado() ? "[ " + casilla.getNumeroMinasAlrededor() + " ]" : "[ X ]");
                 }
             }
             System.out.println();
@@ -142,9 +143,9 @@ public class Tablero {
         for (Casilla[] tableroDeCasilla : tableroDeCasillas) {
             for (Casilla casilla : tableroDeCasilla) {
                 if (casilla.isMina()) {
-                    System.out.print(casilla.isTapado() ? "[" + casilla.getNumeroMinasAlrededor() + "]" : "[*]");
+                    System.out.print(casilla.isTapado() ? "[ " + casilla.getNumeroMinasAlrededor() + " ]" : "[ * ]");
                 } else {
-                    System.out.print("[" + casilla.getNumeroMinasAlrededor() + "]");
+                    System.out.print("[ " + casilla.getNumeroMinasAlrededor() + " ]");
                 }
             }
             System.out.println();
