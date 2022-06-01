@@ -19,7 +19,7 @@ public class InputOutput {
         System.out.println("¡Empieza el juego!");
     }
 
-    public void EleccioDificultat () {
+    public void eleccioDificultat () {
 
         System.out.println("Indica la dificultad que quieres jugar " + jugador.getNombreJugador() + ":" +
                 "\n 1 Facil" +
@@ -68,7 +68,7 @@ public class InputOutput {
         //tablero.imprimirTableroPISTASYBOMBAS(coordenadaX,coordenadaY);
         System.out.println("------------------------------------------------");
     }
-    public void JugarPartida () {
+    public void jugarPartida () {
         int option;
 
             System.out.println("Introduce coordenadas X: ");
@@ -90,12 +90,12 @@ public class InputOutput {
                 } else {System.out.println("ERROR: Introduce nueva coordenada Y");}
             } else {System.out.println("ERROR: Introduce nueva coordenada X");}
             tablero.siesvictoria();
-            JugarPartida();
+            this.jugarPartida();
     }
     public void joc () {
-        introduccio();
-        EleccioDificultat();
-        switchElectionDifficult();
-        JugarPartida();
+        this.introduccio();
+        this.eleccioDificultat();
+        this.switchElectionDifficult();
+        this.jugarPartida();
     }
 }
